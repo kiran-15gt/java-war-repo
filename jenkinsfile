@@ -20,7 +20,7 @@ pipeline {
  
         stage('Build Docker Image') { 
             steps { 
-                sh "sudo docker build -t image1 ." 
+                sh "sudo docker build -t $IMAGE_NAME:latest ." 
             } 
         } 
  
@@ -30,7 +30,7 @@ pipeline {
              
             sh "aws ecr get-login-password --region ${AWS_REGION} | sudo docker login -
 username AWS --password-stdin ${ECR_REPO}" 
-            sh "sudo docker tag image1:latest ${ECR_REPO}:latest" 
+            sh "sudo docker tag $IMAGE_NAME:latest ${ECR_REPO}:latest" 
             sh "sudo docker push ${ECR_REPO}:latest" 
         } 
     } 
