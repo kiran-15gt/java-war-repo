@@ -1,0 +1,40 @@
+pipeline { 
+    agent any
+    environment { 
+        AWS_REGION = 'us-east-1'  
+        ECR_REPO = '713881818471.dkr.ecr.us-east-1.amazonaws.com/demorepo' 
+    } 
+ 
+    stages { 
+        stage('Clone Repository') { 
+            steps { 
+                git branch: 'main', url: 'https://github.com/kiran-15gt/java-war-repo.git' 
+            } 
+        } 
+ 
+        stage('Build Java Application') { 
+            steps { 
+                sh 'mvn clean package -DskipTests'  
+            } 
+        } 
+ 
+        stage('Build Docker Image') { 
+            steps { 
+                sh "sudo docker build -t image1 ." 
+            } 
+        } 
+ 
+        stage('Push Image to AWS ECR') { 
+    steps { 
+        script { 
+             
+            sh "aws ecr get-login-password --region ${AWS_REGION} | sudo docker login -
+username AWS --password-stdin ${ECR_REPO}" 
+            sh "sudo docker tag image1:latest ${ECR_REPO}:latest" 
+            sh "sudo docker push ${ECR_REPO}:latest" 
+        } 
+    } 
+} 
+ 
+    } 
+}
