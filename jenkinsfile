@@ -8,7 +8,7 @@ pipeline {
     stages { 
         stage('Clone Repository') { 
             steps { 
-                git branch: 'main', url: 'https://github.com/kiran-15gt/java-war-repo.git' 
+                git branch: 'main', url: 'https://github.com/SACHIN410219/java-war-repo.git' 
             } 
         } 
  
